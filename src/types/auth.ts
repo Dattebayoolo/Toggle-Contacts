@@ -1,8 +1,9 @@
-export type AuthScreen = 'login' | 'signup';
+export type AuthScreen = 'login';
 
-export interface AuthUser {
-  id: string;
-  name: string;
+export interface ToggleSessionUser {
+  userId: string;
   email: string;
-  createdAt: string;
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: number;
 }

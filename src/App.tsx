@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useContacts } from './hooks/useContacts';
+import { useAuth } from './hooks/useAuth';
 import { Navbar } from './components/Navbar';
+import { LandingPage } from './components/LandingPage';
 import { Sidebar } from './components/Sidebar';
 import { ContactList } from './components/ContactList';
 import { ContactDetailModal } from './components/ContactDetailModal';
@@ -25,6 +27,10 @@ import './styles/modals.css';
 import './styles/print.css';
 
 export function App() {
+  // Toggle Account System session (hosted sign-in + sign-out)
+  const { user, isSigningIn, authError, signIn, signOut } = useAuth();
+
+  // Contact storage is scoped to the signed-in Toggle Account user id
   const {
     contacts,
     labels,
@@ -40,8 +46,18 @@ export function App() {
     mergeDuplicatesAction,
     importContacts,
     addLabel,
-    resetToDemoData,
-  } = useContacts();
+    clearAllData,
+  } = useContacts(user?.userId);
+
+  // Current view: 'landing' (default on launch) or 'app' (contacts dashboard)
+  const [currentView, setCurrentView] = useState<'landing' | 'app'>(() => {
+    // If returning from OAuth callback, jump straight to the app
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('code') || params.get('error')) {
+      return 'app';
+    }
+    return 'landing';
+  });
 
   // Navigation & Filter State
   const [activeFilter, setActiveFilter] = useState<ViewFilter>({ type: 'all' });
@@ -287,22 +303,52 @@ export function App() {
     window.print();
   }, []);
 
-  // Reset demo
-  const handleResetDemoData = useCallback(() => {
+  // Clear all contacts
+  const handleClearAllData = useCallback(() => {
     if (
       window.confirm(
-        'Reset Toggle Contacts to the authentic Pakistani demo phonebook?'
+        'This will permanently delete ALL your contacts and reset labels. Are you sure?'
       )
     ) {
-      resetToDemoData();
-      addToast('Reset to Pakistani demo contacts');
+      clearAllData();
+      addToast('All contacts cleared', 'info');
     }
-  }, [resetToDemoData, addToast]);
+  }, [clearAllData, addToast]);
+
+  // If a Toggle Account is linked the app uses per-account storage; otherwise it
+  // runs on shared storage. Sign-in lives in the Navbar account menu.
+  useEffect(() => {
+    if (authError) {
+      addToast(authError, 'error');
+    }
+  }, [authError, addToast]);
+
+  // If user is on the landing page (default on launch), render the landing page
+  if (currentView === 'landing') {
+    return (
+      <>
+        <LandingPage
+          onLaunchApp={() => setCurrentView('app')}
+          onSignIn={signIn}
+          isSigningIn={isSigningIn}
+          user={user}
+          onSignOut={signOut}
+          isDarkMode={isDarkMode}
+          onToggleTheme={() => setIsDarkMode(!isDarkMode)}
+        />
+        <Toast toasts={toasts} onDismiss={dismissToast} />
+      </>
+    );
+  }
 
   return (
     <div className="app-container" id="toggle-contacts-root">
       {/* Top Navigation Bar */}
       <Navbar
+        user={user}
+        onSignIn={signIn}
+        isSigningIn={isSigningIn}
+        onSignOut={signOut}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onOpenCreateModal={handleCreateContact}
@@ -335,7 +381,7 @@ export function App() {
           onOpenEmergencyModal={() => setIsEmergencyOpen(true)}
           onOpenImportExportModal={() => setIsImportExportOpen(true)}
           onPrintDirectory={handlePrintDirectory}
-          onResetDemoData={handleResetDemoData}
+          onResetDemoData={handleClearAllData}
           onAddLabel={(name, urdu) => addLabel(name, urdu)}
           isOpen={isMobileSidebarOpen || isSidebarOpen}
           isSidebarOpen={isSidebarOpen}
@@ -382,7 +428,7 @@ export function App() {
         labels={labels}
         isOpen={isDetailOpen}
         onClose={() => setIsDetailOpen(false)}
-        onEdit={(c) => {
+        onEdit={(c: Contact) => {
           setIsDetailOpen(false);
           handleEditContact(c);
         }}

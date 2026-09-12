@@ -1,90 +1,97 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Contact, Label, PhoneNumber } from '../types/contact';
-import { INITIAL_CONTACTS, INITIAL_LABELS } from '../utils/mockData';
+import { INITIAL_LABELS } from '../utils/mockData';
 import { detectPakistaniOperator } from '../utils/pakistaniTelecom';
 import { validatePakistaniCNIC } from '../utils/cnicValidator';
 import { mergeContacts } from '../utils/duplicateDetector';
 
-const STORAGE_KEY_CONTACTS = 'toggle_contacts_pk_v1';
-const STORAGE_KEY_LABELS = 'toggle_labels_pk_v1';
+const BASE_KEY_CONTACTS = 'toggle_contacts_pk_v2'; // bumped version → clears stale mock data
+const BASE_KEY_LABELS   = 'toggle_labels_pk_v2';
 
-export function useContacts() {
+/** Contacts/labels are stored per Toggle Account (user id) so each account on
+ *  the same browser gets its own contact book. Without a user id, falls back
+ *  to the legacy shared keys. */
+function storageKeys(userId?: string) {
+  if (!userId) {
+    return { contacts: BASE_KEY_CONTACTS, labels: BASE_KEY_LABELS };
+  }
+  return {
+    contacts: `${BASE_KEY_CONTACTS}__${userId}`,
+    labels: `${BASE_KEY_LABELS}__${userId}`,
+  };
+}
+
+export function useContacts(userId?: string) {
+  const keys = storageKeys(userId);
+  // ── Contacts ──────────────────────────────────────────────────────────────
   const [contacts, setContacts] = useState<Contact[]>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY_CONTACTS);
-      if (saved) {
-        return JSON.parse(saved);
-      }
+      const saved = localStorage.getItem(keys.contacts);
+      if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error('Failed to parse saved contacts', e);
     }
-    return INITIAL_CONTACTS;
+    return []; // always start empty — no demo data
   });
 
+  // ── Labels ────────────────────────────────────────────────────────────────
   const [labels, setLabels] = useState<Label[]>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY_LABELS);
-      if (saved) {
-        return JSON.parse(saved);
-      }
+      const saved = localStorage.getItem(keys.labels);
+      if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error('Failed to parse saved labels', e);
     }
-    return INITIAL_LABELS;
+    return INITIAL_LABELS; // seed with default system labels
   });
 
-  // Save on state change
+  // ── Persist on change ─────────────────────────────────────────────────────
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY_CONTACTS, JSON.stringify(contacts));
+      localStorage.setItem(keys.contacts, JSON.stringify(contacts));
     } catch (e) {
       console.error('Failed to persist contacts', e);
     }
-  }, [contacts]);
+  }, [contacts, keys.contacts]);
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY_LABELS, JSON.stringify(labels));
+      localStorage.setItem(keys.labels, JSON.stringify(labels));
     } catch (e) {
       console.error('Failed to persist labels', e);
     }
-  }, [labels]);
+  }, [labels, keys.labels]);
 
-  // Add Contact
+  // ── Add Contact ───────────────────────────────────────────────────────────
   const addContact = useCallback(
     (contactData: Partial<Contact>): Contact => {
       const now = new Date().toISOString();
-      const id = `pk-cnt-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+      const id  = `pk-cnt-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
 
-      // Auto-detect telecom operator for phones
+      // Auto-detect telecom operator for every phone number
       const processedPhones: PhoneNumber[] = (contactData.phones || []).map((p, idx) => ({
-        id: p.id || `p-${Date.now()}-${idx}`,
-        number: p.number || '',
-        type: p.type || 'mobile',
-        operator: p.operator || detectPakistaniOperator(p.number || ''),
-        isPrimary: p.isPrimary ?? idx === 0,
+        id:         p.id || `p-${Date.now()}-${idx}`,
+        number:     p.number || '',
+        type:       p.type   || 'mobile',
+        operator:   p.operator || detectPakistaniOperator(p.number || ''),
+        isPrimary:  p.isPrimary ?? idx === 0,
       }));
 
-      // Validate CNIC
+      // Derive province & gender from CNIC
       let cnicProvince = contactData.cnicProvince;
-      let cnicGender = contactData.cnicGender;
+      let cnicGender   = contactData.cnicGender;
       if (contactData.cnic) {
         const cnicInfo = validatePakistaniCNIC(contactData.cnic);
         if (cnicInfo.isValid) {
           cnicProvince = cnicInfo.province;
-          cnicGender = cnicInfo.gender;
+          cnicGender   = cnicInfo.gender;
         }
       }
 
-      // Pick avatar color
+      // Random avatar colour
       const avatarPalette = [
-        '#059669', // Emerald
-        '#2563EB', // Blue
-        '#7C3AED', // Purple
-        '#D97706', // Amber
-        '#DC2626', // Crimson
-        '#0D9488', // Teal
-        '#EA580C', // Orange
+        '#059669', '#2563EB', '#7C3AED',
+        '#D97706', '#DC2626', '#0D9488', '#EA580C',
       ];
       const avatarColor =
         contactData.avatarColor ||
@@ -92,28 +99,28 @@ export function useContacts() {
 
       const newContact: Contact = {
         id,
-        firstName: contactData.firstName || '',
-        lastName: contactData.lastName || '',
-        urduName: contactData.urduName || '',
-        nickname: contactData.nickname || '',
-        company: contactData.company || '',
-        jobTitle: contactData.jobTitle || '',
-        phones: processedPhones,
-        emails: contactData.emails || [],
-        cnic: contactData.cnic || '',
+        firstName:    contactData.firstName    || '',
+        lastName:     contactData.lastName     || '',
+        urduName:     contactData.urduName     || '',
+        nickname:     contactData.nickname     || '',
+        company:      contactData.company      || '',
+        jobTitle:     contactData.jobTitle     || '',
+        phones:       processedPhones,
+        emails:       contactData.emails       || [],
+        cnic:         contactData.cnic         || '',
         cnicProvince,
         cnicGender,
-        address: contactData.address,
-        labels: contactData.labels || [],
-        notes: contactData.notes || '',
-        birthday: contactData.birthday || '',
-        website: contactData.website || '',
-        isStarred: !!contactData.isStarred,
-        isFrequent: !!contactData.isFrequent,
+        address:      contactData.address,
+        labels:       contactData.labels       || [],
+        notes:        contactData.notes        || '',
+        birthday:     contactData.birthday     || '',
+        website:      contactData.website      || '',
+        isStarred:    !!contactData.isStarred,
+        isFrequent:   !!contactData.isFrequent,
         avatarColor,
-        createdAt: now,
-        updatedAt: now,
-        deletedAt: null,
+        createdAt:    now,
+        updatedAt:    now,
+        deletedAt:    null,
       };
 
       setContacts((prev) => [newContact, ...prev]);
@@ -122,7 +129,7 @@ export function useContacts() {
     []
   );
 
-  // Update Contact
+  // ── Update Contact ────────────────────────────────────────────────────────
   const updateContact = useCallback((id: string, updates: Partial<Contact>) => {
     const now = new Date().toISOString();
     setContacts((prev) =>
@@ -138,28 +145,28 @@ export function useContacts() {
         }
 
         let cnicProvince = updates.cnicProvince ?? c.cnicProvince;
-        let cnicGender = updates.cnicGender ?? c.cnicGender;
+        let cnicGender   = updates.cnicGender   ?? c.cnicGender;
         if (updates.cnic) {
           const cnicInfo = validatePakistaniCNIC(updates.cnic);
           if (cnicInfo.isValid) {
             cnicProvince = cnicInfo.province;
-            cnicGender = cnicInfo.gender;
+            cnicGender   = cnicInfo.gender;
           }
         }
 
         return {
           ...c,
           ...updates,
-          phones: processedPhones || c.phones,
+          phones:      processedPhones || c.phones,
           cnicProvince,
           cnicGender,
-          updatedAt: now,
+          updatedAt:   now,
         };
       })
     );
   }, []);
 
-  // Soft Delete (Trash)
+  // ── Soft Delete (Trash) ───────────────────────────────────────────────────
   const deleteContact = useCallback((id: string) => {
     const now = new Date().toISOString();
     setContacts((prev) =>
@@ -167,40 +174,40 @@ export function useContacts() {
     );
   }, []);
 
-  // Restore from Trash
+  // ── Restore from Trash ────────────────────────────────────────────────────
   const restoreContact = useCallback((id: string) => {
     setContacts((prev) =>
       prev.map((c) => (c.id === id ? { ...c, deletedAt: null } : c))
     );
   }, []);
 
-  // Permanently Delete
+  // ── Permanent Delete ──────────────────────────────────────────────────────
   const permanentlyDeleteContact = useCallback((id: string) => {
     setContacts((prev) => prev.filter((c) => c.id !== id));
   }, []);
 
-  // Empty Trash
+  // ── Empty Trash ───────────────────────────────────────────────────────────
   const emptyTrash = useCallback(() => {
     setContacts((prev) => prev.filter((c) => !c.deletedAt));
   }, []);
 
-  // Toggle Star
+  // ── Toggle Star ───────────────────────────────────────────────────────────
   const toggleStar = useCallback((id: string) => {
     setContacts((prev) =>
       prev.map((c) => (c.id === id ? { ...c, isStarred: !c.isStarred } : c))
     );
   }, []);
 
-  // Batch Soft Delete
+  // ── Batch Soft Delete ─────────────────────────────────────────────────────
   const batchDelete = useCallback((ids: string[]) => {
-    const now = new Date().toISOString();
+    const now   = new Date().toISOString();
     const idSet = new Set(ids);
     setContacts((prev) =>
       prev.map((c) => (idSet.has(c.id) ? { ...c, deletedAt: now } : c))
     );
   }, []);
 
-  // Batch Assign Label
+  // ── Batch Assign Label ────────────────────────────────────────────────────
   const batchAssignLabel = useCallback((ids: string[], labelId: string) => {
     const idSet = new Set(ids);
     setContacts((prev) =>
@@ -212,7 +219,7 @@ export function useContacts() {
     );
   }, []);
 
-  // Batch Remove Label
+  // ── Batch Remove Label ────────────────────────────────────────────────────
   const batchRemoveLabel = useCallback((ids: string[], labelId: string) => {
     const idSet = new Set(ids);
     setContacts((prev) =>
@@ -223,7 +230,7 @@ export function useContacts() {
     );
   }, []);
 
-  // Merge Duplicates
+  // ── Merge Duplicates ──────────────────────────────────────────────────────
   const mergeDuplicatesAction = useCallback(
     (primaryId: string, duplicateIds: string[]) => {
       setContacts((prev) => {
@@ -242,7 +249,7 @@ export function useContacts() {
     []
   );
 
-  // Import Contacts
+  // ── Import Contacts ───────────────────────────────────────────────────────
   const importContacts = useCallback(
     (newItems: Partial<Contact>[]): number => {
       let count = 0;
@@ -255,30 +262,30 @@ export function useContacts() {
     [addContact]
   );
 
-  // Add Label
+  // ── Add Label ─────────────────────────────────────────────────────────────
   const addLabel = useCallback((name: string, urduName = '', color = '#10B981') => {
-    const id = `label-${Date.now()}`;
+    const id       = `label-${Date.now()}`;
     const newLabel: Label = { id, name, urduName, color, isSystem: false };
     setLabels((prev) => [...prev, newLabel]);
     return newLabel;
   }, []);
 
-  // Delete Label
+  // ── Delete Label ──────────────────────────────────────────────────────────
   const deleteLabel = useCallback((labelId: string) => {
     setLabels((prev) => prev.filter((l) => l.id !== labelId));
-    // Also remove label from contacts
     setContacts((prev) =>
       prev.map((c) => ({ ...c, labels: c.labels.filter((l) => l !== labelId) }))
     );
   }, []);
 
-  // Reset to Demo Data
-  const resetToDemoData = useCallback(() => {
-    setContacts(INITIAL_CONTACTS);
+  // ── Clear All Data ────────────────────────────────────────────────────────
+  /** Wipes all contacts and resets labels to system defaults. */
+  const clearAllData = useCallback(() => {
+    setContacts([]);
     setLabels(INITIAL_LABELS);
-    localStorage.removeItem(STORAGE_KEY_CONTACTS);
-    localStorage.removeItem(STORAGE_KEY_LABELS);
-  }, []);
+    localStorage.removeItem(keys.contacts);
+    localStorage.removeItem(keys.labels);
+  }, [keys.contacts, keys.labels]);
 
   return {
     contacts,
@@ -297,6 +304,6 @@ export function useContacts() {
     importContacts,
     addLabel,
     deleteLabel,
-    resetToDemoData,
+    clearAllData,
   };
 }

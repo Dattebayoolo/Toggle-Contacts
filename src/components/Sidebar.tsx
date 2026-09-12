@@ -403,10 +403,10 @@ export const Sidebar = ({
             className="sidebar-footer-btn"
             onClick={onResetDemoData}
             id="sidebar-reset-demo-btn"
-            title="Reload authentic Pakistani sample contacts"
+            title="Permanently delete all contacts"
           >
             <RotateCcw size={16} />
-            <span>Reset to Demo Data</span>
+            <span>Clear All Contacts</span>
           </button>
         </div>
       </aside>

@@ -10,13 +10,19 @@ import {
   List,
   Keyboard,
   ShieldAlert,
-  Settings,
+  LogIn,
   LogOut,
   User,
   ChevronDown,
 } from 'lucide-react';
 
+import type { ToggleSessionUser } from '../types/auth';
+
 interface NavbarProps {
+  user: ToggleSessionUser | null;
+  onSignIn: () => void;
+  isSigningIn: boolean;
+  onSignOut: () => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onOpenCreateModal: () => void;
@@ -30,6 +36,10 @@ interface NavbarProps {
 }
 
 export const Navbar = ({
+  user,
+  onSignIn,
+  isSigningIn,
+  onSignOut,
   searchQuery,
   onSearchChange,
   onOpenCreateModal,
@@ -211,49 +221,99 @@ export const Navbar = ({
             aria-haspopup="true"
           >
             <div className="nav-user-avatar">
-              <span>K</span>
+              {user ? (
+                <span>{user.email.charAt(0).toUpperCase()}</span>
+              ) : (
+                <User size={16} />
+              )}
             </div>
             <ChevronDown size={14} className={`account-chevron ${isAccountOpen ? 'rotated' : ''}`} />
           </button>
 
           {isAccountOpen && (
             <div className="account-dropdown" id="account-dropdown-menu" role="menu">
-              {/* Header — Google-style account card */}
-              <div className="account-dropdown-header">
-                <div className="account-avatar-large">K</div>
-                <div className="account-info">
-                  <p className="account-name">Kazam Mahmood</p>
-                  <p className="account-email">kazam@togglecontacts.pk</p>
-                </div>
-              </div>
+              {user ? (
+                <>
+                  {/* Header — Google-style account card */}
+                  <div className="account-dropdown-header">
+                    <div className="account-avatar-large">
+                      {user.email.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="account-info">
+                      <p className="account-name">Toggle Account</p>
+                      <p className="account-email">{user.email}</p>
+                    </div>
+                  </div>
 
-              <div className="account-dropdown-divider" />
+                  <div className="account-dropdown-divider" />
 
-              {/* Menu items */}
-              <button className="account-dropdown-item" role="menuitem">
-                <User size={16} />
-                <span>Manage Account</span>
-              </button>
-              <button className="account-dropdown-item" role="menuitem">
-                <Settings size={16} />
-                <span>Settings</span>
-              </button>
+                  {/* Menu items */}
+                  <a
+                    className="account-dropdown-item"
+                    role="menuitem"
+                    href="http://localhost:4000/account"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <User size={16} />
+                    <span>Manage Account</span>
+                  </a>
 
-              <div className="account-dropdown-divider" />
+                  <div className="account-dropdown-divider" />
 
-              {/* Privacy */}
-              <div className="account-dropdown-footer">
-                <span>Privacy Policy</span>
-                <span className="account-dot">·</span>
-                <span>Terms of Service</span>
-              </div>
+                  {/* Privacy */}
+                  <div className="account-dropdown-footer">
+                    <span>Privacy Policy</span>
+                    <span className="account-dot">·</span>
+                    <span>Terms of Service</span>
+                  </div>
 
-              <div className="account-dropdown-divider" />
+                  <div className="account-dropdown-divider" />
 
-              <button className="account-dropdown-item account-signout" role="menuitem">
-                <LogOut size={16} />
-                <span>Sign out</span>
-              </button>
+                  <button
+                    className="account-dropdown-item account-signout"
+                    role="menuitem"
+                    onClick={onSignOut}
+                  >
+                    <LogOut size={16} />
+                    <span>Sign out</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  {/* Signed out — offer the hosted Toggle Account sign-in */}
+                  <div className="account-dropdown-header">
+                    <div className="account-avatar-large">
+                      <User size={22} />
+                    </div>
+                    <div className="account-info">
+                      <p className="account-name">Not signed in</p>
+                      <p className="account-email">Use your Toggle Account</p>
+                    </div>
+                  </div>
+
+                  <div className="account-dropdown-divider" />
+
+                  <button
+                    className="account-dropdown-item"
+                    role="menuitem"
+                    onClick={onSignIn}
+                    disabled={isSigningIn}
+                  >
+                    <LogIn size={16} />
+                    <span>{isSigningIn ? 'Redirecting…' : 'Sign in with Toggle Account'}</span>
+                  </button>
+
+                  <div className="account-dropdown-divider" />
+
+                  {/* Privacy */}
+                  <div className="account-dropdown-footer">
+                    <span>Privacy Policy</span>
+                    <span className="account-dot">·</span>
+                    <span>Terms of Service</span>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
