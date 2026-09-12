@@ -1,0 +1,433 @@
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+/* Material 3 Modal Window */
+.modal-window {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg); /* 28px Material 3 */
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-subtle);
+  width: 100%;
+  max-width: 600px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalPop 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.modal-window.wide {
+  max-width: 800px;
+}
+
+.modal-header {
+  padding: 1.5rem 1.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modal-title {
+  font-family: 'Google Sans', 'Product Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.modal-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background-color var(--transition-fast);
+}
+.modal-close-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 1rem 1.75rem 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  background: var(--bg-surface);
+}
+
+/* Google Material 3 Buttons */
+.btn-secondary {
+  padding: 0 1.25rem;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  color: var(--google-blue);
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.88rem;
+  transition: background-color var(--transition-fast);
+}
+.btn-secondary:hover {
+  background-color: var(--bg-hover);
+}
+
+.btn-primary {
+  padding: 0 1.5rem;
+  height: 40px;
+  border-radius: 20px;
+  background: var(--google-blue);
+  color: #FFFFFF;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-xs);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.btn-primary:hover {
+  background-color: var(--google-blue-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger {
+  padding: 0 1.25rem;
+  height: 40px;
+  border-radius: 20px;
+  background: var(--color-danger);
+  color: #FFFFFF;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color var(--transition-fast);
+}
+.btn-danger:hover {
+  background-color: #8C1D18;
+}
+
+/* Google Outlined Text Fields */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label-urdu-hint {
+  font-family: var(--font-urdu);
+  color: var(--brand-green-emerald);
+  font-weight: 600;
+}
+
+.phone-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.phone-type-select {
+  width: 110px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  font-family: 'Google Sans Text', sans-serif;
+}
+
+.live-operator-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 12px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  align-self: flex-start;
+}
+
+.cnic-status-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-family: 'Google Sans Text', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* Slide-over Contact Details Drawer - Google Style */
+.contact-drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-overlay);
+  z-index: 45;
+}
+
+.contact-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  animation: slideDrawer 0.24s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.drawer-header {
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.drawer-profile-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+}
+
+.drawer-big-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  color: #FFFFFF;
+  font-family: 'Google Sans', 'Product Sans', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawer-hero-name {
+  font-family: 'Google Sans', 'Product Sans', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.drawer-urdu-name {
+  font-size: 1.15rem;
+  font-family: var(--font-urdu);
+  color: var(--brand-green-emerald);
+}
+
+.drawer-hero-org {
+  font-family: 'Google Sans Text', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.drawer-action-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 0.5rem 0;
+}
+
+.drawer-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: transform var(--transition-fast);
+}
+.drawer-action-btn:hover {
+  transform: translateY(-2px);
+  color: var(--google-blue);
+}
+
+.drawer-action-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-subtle);
+  color: var(--google-blue);
+}
+.drawer-action-circle.whatsapp {
+  background: rgba(37, 211, 102, 0.15);
+  color: #25D366;
+}
+
+.drawer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.drawer-section-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.drawer-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.9rem;
+}
+
+.drawer-info-row svg {
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Toast Notifications - Material Snackbars */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  background: #303030;
+  color: #F2F2F2;
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.88rem;
+  animation: fadeIn 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.toast-undo-btn {
+  background: none;
+  border: none;
+  color: #A8C7FA;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+.toast-undo-btn:hover {
+  background: rgba(168, 199, 250, 0.15);
+}
+
+/* Emergency Helplines Grid */
+.emergency-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.emergency-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  background: var(--bg-surface);
+  transition: all var(--transition-fast);
+}
+.emergency-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-xs);
+}
+
+.emergency-code-badge {
+  font-family: 'Google Sans', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #DC2626;
+}

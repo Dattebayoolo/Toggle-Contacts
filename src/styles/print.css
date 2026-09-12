@@ -1,0 +1,57 @@
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .navbar,
+  .sidebar,
+  .view-controls,
+  .bulk-action-bar,
+  .alphabet-bar,
+  .row-actions-group,
+  .btn-whatsapp-direct,
+  .btn-call-direct,
+  .table-cell-select,
+  .table-cell-actions,
+  .modal-backdrop,
+  .toast-container {
+    display: none !important;
+  }
+
+  .app-body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .app-main {
+    overflow: visible !important;
+  }
+
+  .contact-table-wrap {
+    padding: 0 !important;
+  }
+
+  .contact-table {
+    width: 100% !important;
+    border: 1px solid #CCC !important;
+  }
+
+  .contact-table th,
+  .contact-table td {
+    padding: 6px 8px !important;
+    border-bottom: 1px solid #DDD !important;
+    font-size: 10pt !important;
+  }
+
+  .print-header {
+    display: block !important;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #047857;
+    padding-bottom: 10px;
+  }
+}
+
+.print-header {
+  display: none;
+}

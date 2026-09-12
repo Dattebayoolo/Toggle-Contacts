@@ -1,0 +1,321 @@
+/* ============================================================
+   Sidebar — Google Contacts style, desktop + mobile drawer
+   ============================================================ */
+
+.sidebar {
+  width: 256px;
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  user-select: none;
+  transition: width 0.25s cubic-bezier(0.2, 0, 0, 1),
+              opacity 0.2s cubic-bezier(0.2, 0, 0, 1),
+              padding 0.25s cubic-bezier(0.2, 0, 0, 1),
+              min-width 0.25s cubic-bezier(0.2, 0, 0, 1);
+  z-index: 30;
+  padding: 0.75rem 0.5rem;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-subtle);
+}
+
+/* ---- Desktop: sidebar is visible ---- */
+.sidebar.desktop-open {
+  width: 256px;
+  min-width: 256px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---- Desktop: sidebar is toggled closed ---- */
+.sidebar.desktop-collapsed {
+  width: 0;
+  min-width: 0;
+  max-width: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  border: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Backdrop — hidden on desktop, shown on mobile when drawer opens */
+.sidebar-backdrop {
+  display: none;
+}
+
+/* ============================================================
+   Google Floating Action "+ Create contact" Button
+   ============================================================ */
+.sidebar-fab-wrap {
+  padding: 0.25rem 0.5rem 1rem;
+}
+
+.google-fab-create {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 0 1.25rem;
+  height: 56px;
+  font-family: 'Google Sans', 'Product Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-fab);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.google-fab-create:hover {
+  box-shadow: var(--shadow-fab-hover);
+  background: var(--bg-hover);
+}
+
+.google-plus-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Sidebar Content
+   ============================================================ */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.sidebar-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-group-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Material You Pill Link */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: 40px;
+  border-radius: 20px;
+  font-family: 'Google Sans', 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sidebar-link-content {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  overflow: hidden;
+}
+
+.sidebar-link-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+.sidebar-link:hover .sidebar-link-icon {
+  color: var(--text-primary);
+}
+
+/* Active Material You Pill */
+.sidebar-link.active {
+  background-color: var(--bg-active);
+  color: var(--bg-active-text);
+  font-weight: 600;
+}
+.sidebar-link.active .sidebar-link-icon {
+  color: var(--bg-active-text);
+}
+
+.sidebar-count-pill {
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.1rem 0.5rem;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.sidebar-link.active .sidebar-count-pill {
+  color: var(--bg-active-text);
+  font-weight: 600;
+}
+
+.badge-pulse {
+  background: var(--color-danger);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* Operator filter sub-list */
+.operator-sublist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.operator-subitem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1rem 0 2.25rem;
+  height: 36px;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-radius: 18px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  white-space: nowrap;
+}
+.operator-subitem:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+.operator-subitem.active {
+  background-color: var(--bg-subtle);
+  color: var(--brand-green-emerald);
+  font-weight: 600;
+}
+
+.operator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Add Label Button */
+.btn-add-label {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--google-blue);
+  transition: background-color var(--transition-fast);
+}
+.btn-add-label:hover {
+  background-color: var(--bg-hover);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 0.75rem 0.5rem 0.25rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-footer-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.85rem;
+  height: 38px;
+  border-radius: 19px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: background-color var(--transition-fast);
+  white-space: nowrap;
+}
+.sidebar-footer-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   Mobile Sidebar Drawer (≤900px)
+   ============================================================ */
+@media (max-width: 900px) {
+  /* Override desktop classes — always full-width but off-screen by default */
+  .sidebar.desktop-open,
+  .sidebar.desktop-collapsed {
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    width: 256px !important;
+    min-width: 256px !important;
+    max-width: 256px !important;
+    padding: 0.75rem 0.5rem !important;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    border: none !important;
+    pointer-events: none;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.28s cubic-bezier(0.2, 0, 0, 1);
+    box-shadow: none;
+    border-right: 1px solid var(--border-subtle) !important;
+  }
+
+  /* When mobile open class is present, slide in */
+  .sidebar.mobile-open {
+    transform: translateX(0) !important;
+    pointer-events: auto !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+
+  /* Backdrop only shows on mobile */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-overlay);
+    z-index: 25;
+  }
+}

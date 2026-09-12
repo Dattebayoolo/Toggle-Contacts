@@ -1,0 +1,401 @@
+.navbar {
+  height: 64px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  gap: 1.5rem;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 250px;
+}
+
+.menu-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background-color var(--transition-fast);
+}
+.menu-toggle-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Google Contacts Silhouette Icon */
+.brand-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #00875A; /* Pakistani Google Emerald */
+  background: linear-gradient(135deg, #0B57D0 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: var(--shadow-xs);
+}
+
+.brand-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.brand-name {
+  font-family: 'Google Sans', 'Product Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.brand-tagline {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #059669;
+  background: var(--brand-green-subtle);
+  padding: 0.15rem 0.45rem;
+  border-radius: 12px;
+}
+
+/* Google Search Pill */
+.navbar-center {
+  flex: 1;
+  max-width: 720px;
+  position: relative;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  height: 48px;
+  padding-left: 3rem;
+  padding-right: 4.5rem;
+  background: var(--bg-search);
+  border: 1px solid transparent;
+  border-radius: 24px;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+}
+
+.search-input:focus {
+  background: var(--bg-search-focus);
+  border-color: transparent;
+  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 2.25rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-clear-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.search-kbd-hint {
+  position: absolute;
+  right: 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  pointer-events: none;
+}
+
+/* Navbar Right Icons */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background-color var(--transition-fast);
+}
+.nav-icon-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ── Account Dropdown ─────────────────────────────────────── */
+.nav-account-wrap {
+  position: relative;
+  margin-left: 0.25rem;
+}
+
+.nav-account-trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px 2px 2px;
+  border-radius: 24px;
+  border: 1.5px solid transparent;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  cursor: pointer;
+}
+.nav-account-trigger:hover,
+.nav-account-trigger.active {
+  background: var(--bg-hover);
+  border-color: var(--border-subtle);
+}
+
+.nav-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0B57D0 0%, #059669 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  flex-shrink: 0;
+}
+
+.account-chevron {
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+.account-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+/* Dropdown card */
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 300px;
+  background: var(--bg-surface);
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 8px 28px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.08);
+  z-index: 999;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.15s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Header — account card */
+.account-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1rem;
+}
+
+.account-avatar-large {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0B57D0 0%, #059669 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.account-name {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-email {
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Divider */
+.account-dropdown-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 0;
+}
+
+/* Menu items */
+.account-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0.65rem 1.25rem;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.account-dropdown-item:hover {
+  background: var(--bg-hover);
+}
+.account-dropdown-item svg {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+/* Sign out — danger tint on hover */
+.account-dropdown-item.account-signout:hover {
+  background: rgba(220, 38, 38, 0.07);
+  color: #DC2626;
+}
+.account-dropdown-item.account-signout:hover svg {
+  color: #DC2626;
+}
+
+/* Footer links */
+.account-dropdown-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+.account-dropdown-footer span {
+  cursor: pointer;
+}
+.account-dropdown-footer span:not(.account-dot):hover {
+  text-decoration: underline;
+  color: var(--text-secondary);
+}
+.account-dot {
+  cursor: default !important;
+}
+
+
+.view-mode-toggle {
+  display: flex;
+  background: var(--bg-subtle);
+  padding: 2px;
+  border-radius: 20px;
+}
+
+.mode-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mode-btn:hover {
+  color: var(--text-primary);
+}
+.mode-btn.active {
+  background: var(--bg-surface);
+  color: var(--google-blue);
+  box-shadow: var(--shadow-xs);
+}
+
+@media (max-width: 900px) {
+  .navbar-left {
+    min-width: auto;
+  }
+  .brand-tagline {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-kbd-hint {
+    display: none;
+  }
+  .brand-name {
+    font-size: 1.15rem;
+  }
+}

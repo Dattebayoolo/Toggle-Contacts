@@ -1,0 +1,470 @@
+.contact-view-header {
+  padding: 1.25rem 2rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--bg-app);
+}
+
+.view-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.view-heading-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.view-main-title {
+  font-family: 'Google Sans', 'Product Sans', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.view-count-badge {
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort-select {
+  padding: 0.4rem 0.85rem;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.84rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Bulk Selection Action Bar - Google Style */
+.bulk-action-bar {
+  background: #001D35;
+  color: #FFFFFF;
+  padding: 0.6rem 1.25rem;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  animation: fadeIn 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-theme='dark'] .bulk-action-bar {
+  background: #282A2C;
+  border: 1px solid var(--border-subtle);
+}
+
+.bulk-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.bulk-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bulk-action-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background-color var(--transition-fast);
+}
+.bulk-action-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+.bulk-action-btn.danger:hover {
+  background: var(--color-danger);
+}
+
+/* Alphabet Filter Ribbon */
+.alphabet-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.letter-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+.letter-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+.letter-btn.active {
+  background-color: var(--google-blue);
+  color: #FFFFFF;
+}
+
+/* Contacts Table - Google Style */
+.contact-table-wrap {
+  flex: 1;
+  padding: 0 1.5rem 2rem;
+}
+
+.contact-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.contact-table th {
+  padding: 0.75rem 1rem;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  background: var(--bg-app);
+  z-index: 10;
+}
+
+.contact-row {
+  height: 56px;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.contact-row:hover {
+  background-color: var(--bg-hover);
+}
+
+.contact-row.selected {
+  background-color: var(--bg-active);
+}
+
+.contact-table td {
+  padding: 0.5rem 1rem;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.88rem;
+  vertical-align: middle;
+}
+
+/* Checkbox & Star */
+.table-cell-select {
+  width: 70px;
+}
+.select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.star-btn {
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  justify-content: center;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+.star-btn:hover {
+  transform: scale(1.15);
+  color: var(--color-star);
+}
+.star-btn.starred {
+  color: var(--color-star);
+}
+
+/* Contact Name & Google Avatar */
+.table-cell-name {
+  min-width: 220px;
+}
+
+.contact-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.contact-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-family: 'Google Sans', 'Product Sans', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.name-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-full-name {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.urdu-sub-name {
+  font-size: 0.82rem;
+  color: var(--brand-green-emerald);
+  font-family: var(--font-urdu);
+  line-height: 1.2;
+}
+
+/* Phone & Operator */
+.phone-cell-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: nowrap;
+}
+
+.phone-number-text {
+  font-family: 'Google Sans Text', monospace;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.btn-whatsapp-direct {
+  background: #25D366;
+  color: #FFFFFF;
+  border-radius: 12px;
+  padding: 0.2rem 0.5rem;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.btn-whatsapp-direct:hover {
+  background: #1EBE5D;
+  transform: translateY(-1px);
+}
+
+.btn-call-direct {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+}
+.btn-call-direct:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Row Hover Actions */
+.table-cell-actions {
+  text-align: right;
+  width: 130px;
+}
+
+.row-actions-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+.contact-row:hover .row-actions-group {
+  opacity: 1;
+}
+
+.action-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background-color var(--transition-fast);
+}
+.action-icon-btn:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+}
+.action-icon-btn.delete:hover {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+}
+
+/* Grid Cards View */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 0 1.5rem 2rem;
+}
+
+.contact-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+.contact-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-xs);
+}
+.contact-card.selected {
+  border-color: var(--google-blue);
+  background: var(--bg-active);
+}
+
+.card-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.card-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Alphabet Section Header */
+.alphabet-group-header {
+  padding: 1rem 1rem 0.25rem;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-app);
+}
+
+/* Empty State */
+.empty-state-box {
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.empty-icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.empty-desc {
+  font-family: 'Google Sans Text', Roboto, sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 420px;
+}
+
+@media (max-width: 768px) {
+  .contact-view-header {
+    padding: 1rem;
+  }
+  .contact-table-wrap {
+    padding: 0 0.5rem 1rem;
+  }
+  .contact-grid {
+    padding: 0 1rem 1rem;
+  }
+}

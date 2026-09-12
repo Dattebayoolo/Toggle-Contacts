@@ -1,0 +1,294 @@
+:root {
+  /* Fonts - Google Sans primary */
+  --font-main: 'Google Sans', 'Google Sans Text', 'Product Sans', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
+
+  /* Theme: Google Contacts Light (Material You) */
+  --bg-app: #FFFFFF;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-subtle: #F0F4F9;
+  --bg-search: #EAF1FB;
+  --bg-search-focus: #FFFFFF;
+  --bg-hover: #F1F3F4;
+  --bg-active: #C2E7FF;
+  --bg-active-text: #001D35;
+  --bg-overlay: rgba(31, 31, 31, 0.6);
+
+  --text-primary: #1F1F1F;
+  --text-secondary: #444746;
+  --text-muted: #72777A;
+  --text-light: #9AA0A6;
+
+  --border-subtle: #E0E2E0;
+  --border-strong: #C4C7C5;
+  --border-focus: #0B57D0;
+
+  /* Google & Pakistani Green Theme Accent */
+  --google-blue: #0B57D0;
+  --google-blue-hover: #0842A0;
+  --google-blue-surface: #D3E3FD;
+  --brand-green-deep: #064E3B;
+  --brand-green-primary: #047857;
+  --brand-green-emerald: #059669;
+  --brand-green-accent: #10B981;
+  --brand-green-light: #C4EED0;
+  --brand-green-subtle: #E6F4EA;
+
+  /* Status */
+  --color-star: #E37400;
+  --color-star-bg: #FEF7E0;
+  --color-danger: #B3261E;
+  --color-danger-subtle: #F9DEDC;
+  --color-info: #0B57D0;
+
+  /* Shadows - Google Material Elevation */
+  --shadow-xs: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  --shadow-sm: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+  --shadow-md: 0 2px 6px 2px rgba(60, 64, 67, 0.15), 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+  --shadow-lg: 0 4px 12px 0 rgba(60, 64, 67, 0.2), 0 8px 24px 6px rgba(60, 64, 67, 0.15);
+  --shadow-fab: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+  --shadow-fab-hover: 0 2px 3px 0 rgba(60, 64, 67, 0.3), 0 6px 10px 4px rgba(60, 64, 67, 0.15);
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px; /* Google Material 3 signature 28px */
+  --radius-full: 9999px;
+
+  --transition-fast: 0.15s cubic-bezier(0.2, 0, 0, 1);
+  --transition-normal: 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-theme='dark'] {
+  --bg-app: #131314;
+  --bg-surface: #1E1F20;
+  --bg-surface-elevated: #282A2C;
+  --bg-subtle: #282A2C;
+  --bg-search: #282A2C;
+  --bg-search-focus: #1E1F20;
+  --bg-hover: #333538;
+  --bg-active: #004A77;
+  --bg-active-text: #C2E7FF;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  --text-primary: #E3E3E3;
+  --text-secondary: #C4C7C5;
+  --text-muted: #8E918F;
+  --text-light: #5E6260;
+
+  --border-subtle: #2C2D2F;
+  --border-strong: #444746;
+  --border-focus: #A8C7FA;
+
+  --google-blue: #A8C7FA;
+  --google-blue-hover: #8AB4F8;
+  --google-blue-surface: #004A77;
+  --brand-green-deep: #064E3B;
+  --brand-green-primary: #34D399;
+  --brand-green-emerald: #10B981;
+  --brand-green-accent: #6EE7B7;
+  --brand-green-light: #064E3B;
+  --brand-green-subtle: rgba(16, 185, 129, 0.15);
+
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 2px 6px 2px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 4px 12px 0 rgba(0, 0, 0, 0.7);
+  --shadow-fab: 0 2px 6px 0 rgba(0, 0, 0, 0.6);
+  --shadow-fab-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.7);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+button {
+  font-family: var(--font-main);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input, textarea, select {
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--google-blue);
+  box-shadow: 0 0 0 2px var(--google-blue-surface);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.urdu-text {
+  font-family: var(--font-urdu);
+  direction: rtl;
+}
+
+/* Custom Checkbox - Google Style */
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--text-secondary);
+  border-radius: 3px;
+  background-color: transparent;
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin: 0;
+}
+
+.custom-checkbox::before {
+  content: "";
+  width: 10px;
+  height: 6px;
+  transform: scale(0) rotate(-45deg) translate(1px, -1px);
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transition: transform var(--transition-fast);
+}
+
+.custom-checkbox:checked {
+  background-color: var(--google-blue);
+  border-color: var(--google-blue);
+}
+
+.custom-checkbox:checked::before {
+  transform: scale(1) rotate(-45deg) translate(1px, -1px);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* App Container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* App Body (Sidebar + Main) */
+.app-body {
+  display: flex;
+  flex: 1;
+  position: relative;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+/* Main Content Area */
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-app);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Pakistani Operator Badges */
+.badge-operator-jazz {
+  background: rgba(225, 25, 38, 0.1);
+  color: #DC2626;
+  border: 1px solid rgba(225, 25, 38, 0.2);
+}
+.badge-operator-zong {
+  background: rgba(125, 186, 0, 0.12);
+  color: #4D7C0F;
+  border: 1px solid rgba(125, 186, 0, 0.25);
+}
+.badge-operator-telenor {
+  background: rgba(0, 169, 224, 0.12);
+  color: #0284C7;
+  border: 1px solid rgba(0, 169, 224, 0.25);
+}
+.badge-operator-ufone {
+  background: rgba(245, 130, 32, 0.12);
+  color: #D97706;
+  border: 1px solid rgba(245, 130, 32, 0.25);
+}
+.badge-operator-scom {
+  background: rgba(0, 92, 48, 0.12);
+  color: #059669;
+  border: 1px solid rgba(0, 92, 48, 0.25);
+}
+.badge-operator-onic {
+  background: rgba(107, 33, 168, 0.12);
+  color: #9333EA;
+  border: 1px solid rgba(107, 33, 168, 0.25);
+}
+.badge-operator-other {
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideDrawer {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
