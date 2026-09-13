@@ -25,6 +25,7 @@ export interface PhoneNumber {
   type: PhoneType;
   operator?: TelecomOperator;
   isPrimary?: boolean;
+  isPorted?: boolean;
 }
 
 export type EmailType = 'personal' | 'work' | 'other';

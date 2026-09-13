@@ -41,7 +41,7 @@ export const ContactDetailModal = ({
   onDelete,
   onToggleStar,
   onShowQR,
-}) => {
+}: ContactDetailModalProps) => {
   if (!isOpen || !contact) return null;
 
   const primaryPhone = contact.phones[0];

@@ -27,9 +27,12 @@ export const MergeDuplicatesModal = ({
   onMergeGroup,
   onMergeAll,
 }: MergeDuplicatesModalProps) => {
-  if (!isOpen) return null;
+  const duplicateGroups = useMemo(
+    () => (isOpen ? findDuplicates(contacts) : []),
+    [isOpen, contacts]
+  );
 
-  const duplicateGroups = useMemo(() => findDuplicates(contacts), [contacts]);
+  if (!isOpen) return null;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>

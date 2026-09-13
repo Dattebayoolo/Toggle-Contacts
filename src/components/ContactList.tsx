@@ -60,7 +60,7 @@ export const ContactList = ({
   onEmptyTrash,
   onShowQR,
   onOpenCreateModal,
-}) => {
+}: ContactListProps) => {
   const [sortBy, setSortBy] = useState<'firstName' | 'lastName' | 'recent'>('firstName');
   const [activeLetter, setActiveLetter] = useState<string>('ALL');
 

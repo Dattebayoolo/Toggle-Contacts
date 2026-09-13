@@ -319,7 +319,9 @@ export function App() {
   // runs on shared storage. Sign-in lives in the Navbar account menu.
   useEffect(() => {
     if (authError) {
-      addToast(authError, 'error');
+      queueMicrotask(() => {
+        addToast(authError, 'error');
+      });
     }
   }, [authError, addToast]);
 

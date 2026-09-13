@@ -27,8 +27,6 @@ export const ImportExportModal = ({
   contacts,
   onImportContacts,
 }: ImportExportModalProps) => {
-  if (!isOpen) return null;
-
   const [activeTab, setActiveTab] = useState<'export' | 'import'>('export');
   const [exportFormat, setExportFormat] = useState<'vcf' | 'google-csv' | 'pk-csv'>('vcf');
   const [exportScope, setExportScope] = useState<'all' | 'starred'>('all');
@@ -37,6 +35,8 @@ export const ImportExportModal = ({
   const [importedPreview, setImportedPreview] = useState<Partial<Contact>[]>([]);
   const [importFileName, setImportFileName] = useState('');
   const [importStatus, setImportStatus] = useState<string | null>(null);
+
+  if (!isOpen) return null;
 
   const activeContacts = contacts.filter((c) => !c.deletedAt);
   const contactsToExport =

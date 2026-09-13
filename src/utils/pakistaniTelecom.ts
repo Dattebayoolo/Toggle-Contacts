@@ -126,23 +126,82 @@ export function detectPakistaniOperator(rawPhone: string): TelecomOperator {
   return 'other';
 }
 
+export const PAKISTANI_LANDLINE_AREA_CODES: Record<string, string> = {
+  '021': 'Karachi',
+  '042': 'Lahore',
+  '051': 'Islamabad / Rawalpindi',
+  '041': 'Faisalabad',
+  '061': 'Multan',
+  '091': 'Peshawar',
+  '081': 'Quetta',
+  '052': 'Sialkot',
+  '055': 'Gujranwala',
+  '053': 'Gujrat',
+  '048': 'Sargodha',
+  '062': 'Bahawalpur',
+  '071': 'Sukkur',
+  '022': 'Hyderabad',
+  '0992': 'Abbottabad',
+  '05822': 'Muzaffarabad',
+  '05811': 'Gilgit',
+};
+
+/**
+ * Detects if a phone number corresponds to a Pakistani landline with city name.
+ */
+export function detectPakistaniLandline(rawPhone: string): {
+  isLandline: boolean;
+  city?: string;
+  areaCode?: string;
+} {
+  const digits = cleanPhoneNumber(rawPhone);
+  if (!digits) return { isLandline: false };
+
+  let standardDigits = digits;
+  if (standardDigits.startsWith('92')) {
+    standardDigits = '0' + standardDigits.substring(2);
+  } else if (standardDigits.startsWith('0092')) {
+    standardDigits = '0' + standardDigits.substring(4);
+  }
+
+  if (standardDigits.startsWith('03')) {
+    return { isLandline: false };
+  }
+
+  for (const len of [5, 4, 3]) {
+    if (standardDigits.length >= len + 5) {
+      const code = standardDigits.substring(0, len);
+      if (PAKISTANI_LANDLINE_AREA_CODES[code]) {
+        return {
+          isLandline: true,
+          city: PAKISTANI_LANDLINE_AREA_CODES[code],
+          areaCode: code,
+        };
+      }
+    }
+  }
+
+  return { isLandline: false };
+}
+
 /**
  * Formats a Pakistani phone number into standard human-friendly format:
- * e.g. 0300 1234567 or +92 300 1234567
+ * e.g. 0300 1234567 or +92 300 1234567, or 042 35889900 for landlines
  */
 export function formatPakistaniPhone(raw: string, includeCountryCode = false): string {
   if (!raw) return '';
   const digits = cleanPhoneNumber(raw);
 
   let local = '';
-  if (digits.startsWith('92') && digits.length >= 12) {
-    local = digits.substring(2); // 3001234567
-  } else if (digits.startsWith('0') && digits.length >= 11) {
-    local = digits.substring(1); // 3001234567
+  if (digits.startsWith('92') && digits.length >= 10) {
+    local = digits.substring(2);
+  } else if (digits.startsWith('0') && digits.length >= 9) {
+    local = digits.substring(1);
   } else {
     local = digits;
   }
 
+  // Mobile numbers (starts with 3, 10 digits)
   if (local.length === 10 && local.startsWith('3')) {
     const prefix = '0' + local.substring(0, 3);
     const suffix = local.substring(3);
@@ -152,7 +211,20 @@ export function formatPakistaniPhone(raw: string, includeCountryCode = false): s
     return `${prefix} ${suffix}`;
   }
 
-  // Landlines or short codes (e.g., 042-35889900, 1122, 15)
+  // Landline detection
+  const landlineInfo = detectPakistaniLandline(raw);
+  if (landlineInfo.isLandline && landlineInfo.areaCode) {
+    const areaCodeLen = landlineInfo.areaCode.length;
+    const std = digits.startsWith('92') ? '0' + digits.substring(2) : (digits.startsWith('0') ? digits : '0' + digits);
+    const code = std.substring(0, areaCodeLen);
+    const rest = std.substring(areaCodeLen);
+    if (includeCountryCode) {
+      return `+92 ${code.substring(1)} ${rest}`;
+    }
+    return `${code} ${rest}`;
+  }
+
+  // Short codes (e.g., 1122, 15)
   if (digits.length <= 5) {
     return digits;
   }

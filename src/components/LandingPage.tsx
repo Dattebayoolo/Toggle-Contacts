@@ -6,7 +6,6 @@ import {
   Sparkles,
   ArrowRight,
   PhoneCall,
-  MessageSquare,
   QrCode,
   Lock,
   Moon,
@@ -14,16 +13,13 @@ import {
   ChevronDown,
   ChevronUp,
   CheckCircle2,
-  Radio,
   FileSpreadsheet,
   Layers,
   HeartHandshake,
   ExternalLink,
   LogIn,
   LogOut,
-  Star,
   Search,
-  Check,
 } from 'lucide-react';
 import type { ToggleSessionUser } from '../types/auth';
 import {

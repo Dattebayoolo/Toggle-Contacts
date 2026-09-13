@@ -13,9 +13,11 @@ import type {
   EmailAddress,
   PakistaniProvince,
   PhoneType,
+  TelecomOperator,
 } from '../types/contact';
 import {
   detectPakistaniOperator,
+  detectPakistaniLandline,
   TELECOM_OPERATORS,
 } from '../utils/pakistaniTelecom';
 import { formatCNIC, validatePakistaniCNIC } from '../utils/cnicValidator';
@@ -36,8 +38,6 @@ export const ContactFormModal = ({
   onClose,
   onSave,
 }: ContactFormModalProps) => {
-  if (!isOpen) return null;
-
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [urduName, setUrduName] = useState('');
@@ -59,55 +59,73 @@ export const ContactFormModal = ({
 
   // Initialize form
   useEffect(() => {
-    if (contactToEdit) {
-      setFirstName(contactToEdit.firstName || '');
-      setLastName(contactToEdit.lastName || '');
-      setUrduName(contactToEdit.urduName || '');
-      setCompany(contactToEdit.company || '');
-      setJobTitle(contactToEdit.jobTitle || '');
-      setPhones(
-        contactToEdit.phones.length > 0
-          ? contactToEdit.phones
-          : [{ id: 'p-1', number: '', type: 'mobile', isPrimary: true }]
-      );
-      setEmails(
-        contactToEdit.emails.length > 0
-          ? contactToEdit.emails
-          : [{ id: 'e-1', email: '', type: 'personal' }]
-      );
-      setCnic(contactToEdit.cnic || '');
-      setStreet(contactToEdit.address?.street || '');
-      setCity(contactToEdit.address?.city || '');
-      setProvince(contactToEdit.address?.province || 'Punjab');
-      setSelectedLabels(contactToEdit.labels || []);
-      setNotes(contactToEdit.notes || '');
-      setIsStarred(!!contactToEdit.isStarred);
-    } else {
-      setFirstName('');
-      setLastName('');
-      setUrduName('');
-      setCompany('');
-      setJobTitle('');
-      setPhones([{ id: 'p-1', number: '', type: 'mobile', isPrimary: true }]);
-      setEmails([{ id: 'e-1', email: '', type: 'personal' }]);
-      setCnic('');
-      setStreet('');
-      setCity('');
-      setProvince('Punjab');
-      setSelectedLabels([]);
-      setNotes('');
-      setIsStarred(false);
-    }
+    if (!isOpen) return;
+
+    queueMicrotask(() => {
+      if (contactToEdit) {
+        setFirstName(contactToEdit.firstName || '');
+        setLastName(contactToEdit.lastName || '');
+        setUrduName(contactToEdit.urduName || '');
+        setCompany(contactToEdit.company || '');
+        setJobTitle(contactToEdit.jobTitle || '');
+        setPhones(
+          contactToEdit.phones.length > 0
+            ? contactToEdit.phones
+            : [{ id: 'p-1', number: '', type: 'mobile', isPrimary: true }]
+        );
+        setEmails(
+          contactToEdit.emails.length > 0
+            ? contactToEdit.emails
+            : [{ id: 'e-1', email: '', type: 'personal' }]
+        );
+        setCnic(contactToEdit.cnic || '');
+        setStreet(contactToEdit.address?.street || '');
+        setCity(contactToEdit.address?.city || '');
+        setProvince(contactToEdit.address?.province || 'Punjab');
+        setSelectedLabels(contactToEdit.labels || []);
+        setNotes(contactToEdit.notes || '');
+        setIsStarred(!!contactToEdit.isStarred);
+      } else {
+        setFirstName('');
+        setLastName('');
+        setUrduName('');
+        setCompany('');
+        setJobTitle('');
+        setPhones([{ id: 'p-1', number: '', type: 'mobile', isPrimary: true }]);
+        setEmails([{ id: 'e-1', email: '', type: 'personal' }]);
+        setCnic('');
+        setStreet('');
+        setCity('');
+        setProvince('Punjab');
+        setSelectedLabels([]);
+        setNotes('');
+        setIsStarred(false);
+      }
+    });
   }, [contactToEdit, isOpen]);
+
+  if (!isOpen) return null;
 
   // Phone number handlers
   const handlePhoneChange = (idx: number, val: string) => {
     const updated = [...phones];
-    const op = detectPakistaniOperator(val);
+    const autoOp = detectPakistaniOperator(val);
     updated[idx] = {
       ...updated[idx],
       number: val,
+      // If user hasn't explicitly ported to a different operator, use auto-detected
+      operator: updated[idx].isPorted ? updated[idx].operator : autoOp,
+    };
+    setPhones(updated);
+  };
+
+  const handlePhoneOperatorChange = (idx: number, op: TelecomOperator) => {
+    const updated = [...phones];
+    const autoOp = detectPakistaniOperator(updated[idx].number);
+    updated[idx] = {
+      ...updated[idx],
       operator: op,
+      isPorted: op !== autoOp && autoOp !== 'other',
     };
     setPhones(updated);
   };
@@ -375,18 +393,94 @@ export const ContactFormModal = ({
                     )}
                   </div>
 
-                  {/* Live Telecom Operator Badge */}
-                  {op && phone.number.length >= 4 && (
-                    <div
-                      className={`live-operator-pill badge-operator-${op.operator}`}
-                    >
-                      <span>Detected Network:</span>
-                      <strong>{op.displayName}</strong>
-                      <span className="urdu-text" style={{ fontSize: '0.75rem' }}>
-                        ({op.urduName})
-                      </span>
-                    </div>
-                  )}
+                  {/* Live Telecom / Landline / MNP Controls */}
+                  {phone.number.length >= 3 && (() => {
+                    const landline = detectPakistaniLandline(phone.number);
+                    return (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          flexWrap: 'wrap',
+                          gap: '0.5rem',
+                          padding: '0.2rem 0.1rem',
+                        }}
+                      >
+                        <div
+                          className={`live-operator-pill badge-operator-${op ? op.operator : 'other'}`}
+                          style={{ margin: 0 }}
+                        >
+                          {landline.isLandline ? (
+                            <>
+                              <span>Landline:</span>
+                              <strong>{landline.city}</strong>
+                              <span style={{ fontSize: '0.75rem', opacity: 0.85 }}>({landline.areaCode})</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>{phone.isPorted ? 'MNP Network:' : 'Network:'}</span>
+                              <strong>{op?.displayName || 'Other'}</strong>
+                              {op?.urduName && (
+                                <span className="urdu-text" style={{ fontSize: '0.75rem' }}>
+                                  ({op.urduName})
+                                </span>
+                              )}
+                              {phone.isPorted && (
+                                <span
+                                  style={{
+                                    fontSize: '0.65rem',
+                                    padding: '1px 5px',
+                                    borderRadius: '999px',
+                                    backgroundColor: 'rgba(0,0,0,0.15)',
+                                    fontWeight: 600,
+                                    textTransform: 'uppercase',
+                                  }}
+                                >
+                                  Ported
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </div>
+
+                        {/* MNP Network Switcher */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            fontSize: '0.75rem',
+                          }}
+                        >
+                          <span style={{ color: 'var(--text-muted)' }}>MNP Port:</span>
+                          <select
+                            value={phone.operator || 'other'}
+                            onChange={(e) =>
+                              handlePhoneOperatorChange(idx, e.target.value as TelecomOperator)
+                            }
+                            style={{
+                              fontSize: '0.75rem',
+                              padding: '2px 8px',
+                              borderRadius: '6px',
+                              border: '1px solid var(--border-color)',
+                              backgroundColor: 'var(--surface-color)',
+                              color: 'var(--text-color)',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <option value="jazz">Jazz (جاز)</option>
+                            <option value="zong">Zong 4G (زونگ)</option>
+                            <option value="telenor">Telenor (ٹیلی نار)</option>
+                            <option value="ufone">Ufone 4G (یو فون)</option>
+                            <option value="scom">SCOM (ایس کام)</option>
+                            <option value="onic">Onic (اونِک)</option>
+                            <option value="other">Landline / Other (دیگر)</option>
+                          </select>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               );
             })}

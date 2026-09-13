@@ -47,7 +47,7 @@ export const ContactCard = ({
   onShowQR,
   viewMode,
   isTrashView,
-}) => {
+}: ContactCardProps) => {
   const primaryPhone = contact.phones[0];
   const primaryEmail = contact.emails[0];
   const operatorInfo = primaryPhone?.operator
